@@ -8,6 +8,13 @@ class CheckoutTest {
     @Test
     void calculaElTotalConElEnvioConfigurado() {
         Order order = new Order("o1", "c1", "Cali", 100.0, 4.0);
-        assertEquals(110.0, new Checkout().total(order));
+        assertEquals(110.0, Shop.checkout().total(order));
+    }
+
+    @Test
+    void checkoutFuncionaConCualquierCalculador() {
+        Order order = new Order("o1", "c1", "Cali", 100.0, 4.0);
+        Checkout checkout = new Checkout(ignored -> 7.8);
+        assertEquals(107.8, checkout.total(order), 0.000001);
     }
 }
