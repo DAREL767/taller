@@ -1,6 +1,10 @@
 package shop;
 
+import java.util.logging.Logger;
+
 public class ShippingCalculatorProxy implements ShippingCalculator {
+    private static final Logger LOGGER = Logger.getLogger(ShippingCalculatorProxy.class.getName());
+
     private final ShippingCalculator legacy;
     private final ShippingCalculator smart;
     private final FeatureFlags flags;
@@ -13,6 +17,8 @@ public class ShippingCalculatorProxy implements ShippingCalculator {
 
     @Override
     public double calculate(Order order) {
-        return flags.isEnabled("smart-shipping") ? smart.calculate(order) : legacy.calculate(order);
+        double cost = flags.isEnabled("smart-shipping") ? smart.calculate(order) : legacy.calculate(order);
+        LOGGER.info(() -> "Envío del pedido " + order.id() + ": " + cost);
+        return cost;
     }
 }
