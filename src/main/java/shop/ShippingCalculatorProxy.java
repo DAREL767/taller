@@ -5,19 +5,15 @@ import java.util.logging.Logger;
 public class ShippingCalculatorProxy implements ShippingCalculator {
     private static final Logger LOGGER = Logger.getLogger(ShippingCalculatorProxy.class.getName());
 
-    private final ShippingCalculator legacy;
-    private final ShippingCalculator smart;
-    private final FeatureFlags flags;
+    private final ShippingCalculator delegate;
 
-    public ShippingCalculatorProxy(ShippingCalculator legacy, ShippingCalculator smart, FeatureFlags flags) {
-        this.legacy = legacy;
-        this.smart = smart;
-        this.flags = flags;
+    public ShippingCalculatorProxy(ShippingCalculator delegate) {
+        this.delegate = delegate;
     }
 
     @Override
     public double calculate(Order order) {
-        double cost = flags.isEnabled("smart-shipping") ? smart.calculate(order) : legacy.calculate(order);
+        double cost = delegate.calculate(order);
         LOGGER.info(() -> "Envío del pedido " + order.id() + ": " + cost);
         return cost;
     }
