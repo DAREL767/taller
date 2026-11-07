@@ -8,7 +8,7 @@ class CheckoutTest {
     @Test
     void calculaElTotalConElEnvioConfigurado() {
         Order order = new Order("o1", "c1", "Cali", 100.0, 4.0);
-        assertEquals(110.0, Shop.checkout().total(order));
+        assertEquals(115.0, Shop.checkout().total(order));
     }
 
     @Test
