@@ -2,6 +2,8 @@ package shop;
 
 public class Shop {
     public static Checkout checkout() {
-        return new Checkout(new LegacyShippingCalculator());
+        FeatureFlags flags = new FeatureFlags();
+        return new Checkout(new ShippingCalculatorProxy(
+                new LegacyShippingCalculator(), order -> 0.0, flags));
     }
 }
